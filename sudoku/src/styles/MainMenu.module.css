@@ -1,0 +1,171 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem 1rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.signInfo {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.2);
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  border-radius: 2rem;
+  backdrop-filter: blur(4px);
+}
+
+.menu {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.menuButton {
+  background: white;
+  border: none;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: left;
+  width: 100%;
+}
+
+.menuButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.buttonIcon {
+  font-size: 2.5rem;
+  min-width: 3rem;
+  text-align: center;
+}
+
+.buttonContent {
+  flex: 1;
+}
+
+.buttonTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.buttonDifficulty {
+  font-size: 0.8rem;
+  color: white;
+  background: var(--button-color);
+  display: inline-block;
+  padding: 0.2rem 0.8rem;
+  border-radius: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.buttonDescription {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.resetButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: white;
+  padding: 0.6rem 1.5rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.resetButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.historyButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  padding: 0.6rem 1.5rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  margin-right: 1rem;
+}
+
+.historyButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.resetButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: white;
+  padding: 0.6rem 1.5rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.resetButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.settingsButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  padding: 0.6rem 1.5rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.settingsButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}

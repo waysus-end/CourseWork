@@ -1,0 +1,85 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 2rem;
+  padding: 2.5rem;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.symbol {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #764ba2;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.description {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.list {
+  text-align: left;
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+  list-style: none;
+}
+
+.list li {
+  margin: 0.5rem 0;
+  color: #444;
+}
+
+.button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-weight: 500;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

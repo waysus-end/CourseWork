@@ -1,0 +1,219 @@
+.container {
+  min-height: 100vh;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.container.dark {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.card {
+  background: white;
+  border-radius: 2rem;
+  padding: 1.5rem;
+  max-width: 500px;
+  width: 100%;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  animation: slideUp 0.4s ease-out;
+}
+
+.dark .card {
+  background: #1e1e2e;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.backButton {
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: opacity 0.2s;
+  color: #764ba2;
+}
+
+.dark .backButton {
+  color: #9b7bc9;
+}
+
+.backButton:hover {
+  opacity: 0.7;
+}
+
+.title {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.dark .title {
+  color: #f5f5f5;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dark .section {
+  border-bottom-color: #333;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.dark .sectionTitle {
+  color: #aaa;
+}
+
+.settingItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+
+.settingInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.settingIcon {
+  font-size: 1.2rem;
+}
+
+.settingLabel {
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.dark .settingLabel {
+  color: #ddd;
+}
+
+.themeToggle {
+  width: 50px;
+  height: 26px;
+  background: #ccc;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s;
+  padding: 0;
+}
+
+.themeToggle.active {
+  background: #764ba2;
+}
+
+.toggleSlider {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+}
+
+.themeToggle.active .toggleSlider {
+  transform: translateX(24px);
+}
+
+.dangerButton, .warningButton {
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.dangerButton {
+  background: #ffebee;
+  color: #f44336;
+}
+
+.dangerButton:hover {
+  background: #f44336;
+  color: white;
+}
+
+.warningButton {
+  background: #fff3e0;
+  color: #ff9800;
+}
+
+.warningButton:hover {
+  background: #ff9800;
+  color: white;
+}
+
+.confirmButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cancelButton, .confirmButton {
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.cancelButton {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.cancelButton:hover {
+  background: #d0d0d0;
+}
+
+.confirmButton {
+  background: #f44336;
+  color: white;
+}
+
+.confirmButton:hover {
+  background: #d32f2f;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.version {
+  font-size: 0.7rem;
+  color: #aaa;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
