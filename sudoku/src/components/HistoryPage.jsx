@@ -5,19 +5,34 @@ import styles from '../styles/HistoryPage.module.css';
 
 const HistoryPage = ({ userSignId, onBack }) => {
   const [history, setHistory] = useState([]);
-  const [filter, setFilter] = useState('all'); // all, daily, horizons, heart
+  const [filter, setFilter] = useState('all');
   const [showConfirm, setShowConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Загружаем историю при монтировании
   useEffect(() => {
     loadHistoryData();
   }, []);
 
-  const loadHistoryData = () => {
-    const data = loadHistory();
-    // Сортируем по дате (новые сверху)
-    data.sort((a, b) => new Date(b.date) - new Date(a.date));
-    setHistory(data);
+  const loadHistoryData = async () => {
+    setIsLoading(true);
+    try {
+      const data = await loadHistory();
+      // Проверяем, что data - это массив
+      if (Array.isArray(data)) {
+        // Сортируем по дате (новые сверху)
+        const sortedData = [...data].sort((a, b) => new Date(b.date) - new Date(a.date));
+        setHistory(sortedData);
+      } else {
+        console.error('loadHistory вернул не массив:', data);
+        setHistory([]);
+      }
+    } catch (error) {
+      console.error('Ошибка загрузки истории:', error);
+      setHistory([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Получаем информацию о знаке
@@ -26,6 +41,7 @@ const HistoryPage = ({ userSignId, onBack }) => {
 
   // Фильтрация по категориям
   const getFilteredHistory = () => {
+    if (!Array.isArray(history)) return [];
     if (filter === 'all') return history;
     return history.filter(item => {
       if (filter === 'daily') return item.category === 'РАДОСТИ ДНЯ';
@@ -36,30 +52,23 @@ const HistoryPage = ({ userSignId, onBack }) => {
   };
 
   // Очистка всей истории
-  const handleClearHistory = () => {
-    clearHistory();
-    loadHistoryData();
-    setShowConfirm(false);
+  const handleClearHistory = async () => {
+    try {
+      await clearHistory();
+      await loadHistoryData();
+      setShowConfirm(false);
+    } catch (error) {
+      console.error('Ошибка очистки:', error);
+    }
   };
 
-  // ========== ЭКСПОРТ ИСТОРИИ ==========
-  
-  // Экспорт истории в JSON
-  const exportHistoryToJSON = () => {
-    const data = JSON.stringify(history, null, 2);
-    const blob = new Blob([data], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `cifry-sudby-history-${new Date().toISOString().slice(0, 10)}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  // Экспорт истории в текст
+  // Экспорт истории в TXT
   const exportHistoryToText = () => {
+    if (!Array.isArray(history) || history.length === 0) {
+      alert('Нет истории для экспорта');
+      return;
+    }
+
     let text = '═══════════════════════════════════════\n';
     text += '         ЦИФРЫ СУДЬБЫ - ИСТОРИЯ\n';
     text += '═══════════════════════════════════════\n\n';
@@ -69,8 +78,8 @@ const HistoryPage = ({ userSignId, onBack }) => {
       text += `📅 Дата: ${formatDate(item.date)}\n`;
       text += `📂 Категория: ${item.category}\n`;
       text += `⏱️ Время: ${formatTime(item.time)}\n`;
-      text += `❌ Ошибок: ${item.errors}\n`;
-      text += `💡 Подсказок: ${item.hintsUsed}\n`;
+      text += `❌ Ошибок: ${item.errors || 0}\n`;
+      text += `💡 Подсказок: ${item.hintsUsed || 0}\n`;
       text += `❓ Вопрос: "${item.question}"\n`;
       text += `✨ Ответ: ${item.answer}\n`;
       text += '───────────────────────────────────\n\n';
@@ -93,17 +102,22 @@ const HistoryPage = ({ userSignId, onBack }) => {
 
   // Форматирование даты
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now - date;
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
-    if (days === 0) {
-      return `сегодня, ${date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}`;
-    } else if (days === 1) {
-      return `вчера, ${date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}`;
-    } else {
-      return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+    if (!dateString) return 'дата неизвестна';
+    try {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diff = now - date;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      
+      if (days === 0) {
+        return `сегодня, ${date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}`;
+      } else if (days === 1) {
+        return `вчера, ${date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}`;
+      } else {
+        return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+      }
+    } catch {
+      return 'дата неизвестна';
     }
   };
 
@@ -125,12 +139,23 @@ const HistoryPage = ({ userSignId, onBack }) => {
 
   // Форматирование времени
   const formatTime = (seconds) => {
+    if (!seconds && seconds !== 0) return '0:00';
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   const filteredHistory = getFilteredHistory();
+
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.card}>
+          <p>Загрузка истории...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -200,14 +225,11 @@ const HistoryPage = ({ userSignId, onBack }) => {
           </button>
         </div>
 
-        {/* Кнопки экспорта */}
+        {/* Кнопка экспорта в TXT */}
         {history.length > 0 && (
           <div className={styles.exportButtons}>
-            <button className={styles.exportButton} onClick={exportHistoryToJSON}>
-              📄 Экспорт JSON
-            </button>
             <button className={styles.exportButton} onClick={exportHistoryToText}>
-              📝 Экспорт TXT
+              📝 Экспорт истории (TXT)
             </button>
           </div>
         )}
@@ -235,8 +257,8 @@ const HistoryPage = ({ userSignId, onBack }) => {
                   </div>
                   <div className={styles.itemStats}>
                     <span>⏱️ {formatTime(item.time)}</span>
-                    <span>❌ {item.errors}</span>
-                    <span>💡 {item.hintsUsed}</span>
+                    <span>❌ {item.errors || 0}</span>
+                    <span>💡 {item.hintsUsed || 0}</span>
                   </div>
                 </div>
                 <div className={styles.itemCategory} style={{ color: getCategoryColor(item.category) }}>

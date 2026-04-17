@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles/MainMenu.module.css';
 
-const MainMenu = ({ userSign, onSelectCategory, onResetAccount, onOpenHistory, onOpenSettings }) => {
+const MainMenu = ({ userSign, onSelectCategory, onOpenHistory, onOpenSettings }) => {
   const categories = [
     {
       id: 'daily',
@@ -64,9 +64,6 @@ const MainMenu = ({ userSign, onSelectCategory, onResetAccount, onOpenHistory, o
         </button>
         <button className={styles.settingsButton} onClick={onOpenSettings}>
           ⚙️ Настройки
-        </button>
-        <button className={styles.resetButton} onClick={onResetAccount}>
-          Сбросить аккаунт
         </button>
       </div>
     </div>

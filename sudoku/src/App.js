@@ -11,23 +11,22 @@ import { hasVisitedWelcome, markWelcomeVisited, loadUserSign, resetAccount } fro
 import zodiacData from './data/zodiacSigns.json';
 
 function App() {
-  const [step, setStep] = useState('welcome'); // welcome, signSelector, mainMenu, game, answer
+  const [step, setStep] = useState('welcome');
   const [userSign, setUserSign] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [gameResult, setGameResult] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
-  // Функция для получения имени знака по id
   const getSignName = (signId) => {
     const sign = zodiacData.signs.find(s => s.id === signId);
     return sign ? sign.name : signId;
   };
 
-  // Проверяем при загрузке, был ли пользователь уже
   React.useEffect(() => {
+  const init = async () => {
     const visited = hasVisitedWelcome();
-    const savedSign = loadUserSign();
+    const savedSign = await loadUserSign();
     
     if (savedSign) {
       setUserSign(savedSign);
@@ -37,7 +36,10 @@ function App() {
     } else {
       setStep('welcome');
     }
-  }, []);
+  };
+  
+  init();
+}, []);
 
   const handleWelcomeComplete = () => {
     markWelcomeVisited();
@@ -91,7 +93,6 @@ function App() {
     setShowSettings(false);
   };
 
-  // Если открыта история — показываем её
   if (showHistory) {
     return (
       <HistoryPage
@@ -101,7 +102,6 @@ function App() {
     );
   }
 
-  // Если открыты настройки — показываем их
   if (showSettings) {
     return (
       <SettingsPage
@@ -112,30 +112,25 @@ function App() {
     );
   }
 
-  // Страница приветствия
   if (step === 'welcome') {
     return <WelcomePage onStart={handleWelcomeComplete} />;
   }
 
-  // Выбор знака зодиака
   if (step === 'signSelector') {
     return <SignSelector onSignSelected={handleSignSelected} />;
   }
 
-  // Главное меню с категориями
   if (step === 'mainMenu') {
     return (
       <MainMenu 
         userSign={getSignName(userSign)}
         onSelectCategory={handleSelectCategory}
-        onResetAccount={handleReset}
         onOpenHistory={handleOpenHistory}
         onOpenSettings={handleOpenSettings}
       />
     );
   }
 
-  // Игра в судоку
   if (step === 'game') {
     return (
       <SudokuGame
@@ -147,7 +142,6 @@ function App() {
     );
   }
 
-  // Страница ответа
   if (step === 'answer') {
     return (
       <AnswerPage

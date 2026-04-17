@@ -1,31 +1,47 @@
-// ========== КЛЮЧИ ДЛЯ ХРАНИЛИЩА ==========
+import * as supabase from './supabaseStorage';
+import { getUserId } from './supabase';
+
+// ========== КЛЮЧИ ==========
 export const STORAGE_KEYS = {
-  USER_SIGN: 'user_sign',           // знак зодиака
-  HISTORY: 'history',                // история вопросов
-  HAS_VISITED: 'has_visited'         // был ли на приветственной
+  USER_SIGN: 'user_sign',
+  HAS_VISITED: 'has_visited'
 };
 
 // ========== ЗНАК ЗОДИАКА ==========
-export const saveUserSign = (signId) => {
+export const saveUserSign = async (signId) => {
   try {
-    localStorage.setItem(STORAGE_KEYS.USER_SIGN, signId);
-    return true;
+    const userId = getUserId();
+    const result = await supabase.saveUserSign(userId, signId);
+    if (result) {
+      localStorage.setItem(STORAGE_KEYS.USER_SIGN, signId);
+    }
+    return result;
   } catch (error) {
     console.error('Ошибка сохранения знака:', error);
     return false;
   }
 };
 
-export const loadUserSign = () => {
+export const loadUserSign = async () => {
   try {
-    return localStorage.getItem(STORAGE_KEYS.USER_SIGN);
+    // Сначала пробуем из localStorage
+    let sign = localStorage.getItem(STORAGE_KEYS.USER_SIGN);
+    if (sign) return sign;
+    
+    // Если нет — из Supabase
+    const userId = getUserId();
+    sign = await supabase.loadUserSign(userId);
+    if (sign) {
+      localStorage.setItem(STORAGE_KEYS.USER_SIGN, sign);
+    }
+    return sign;
   } catch (error) {
     console.error('Ошибка загрузки знака:', error);
     return null;
   }
 };
 
-// ========== ПРИВЕТСТВЕННАЯ СТРАНИЦА ==========
+// ========== ПРИВЕТСТВИЕ ==========
 export const hasVisitedWelcome = () => {
   try {
     return localStorage.getItem(STORAGE_KEYS.HAS_VISITED) === 'true';
@@ -42,12 +58,19 @@ export const markWelcomeVisited = () => {
   }
 };
 
-// ========== СБРОС АККАУНТА ==========
-export const resetAccount = () => {
+// ========== СБРОС ==========
+export const resetAccount = async () => {
   try {
+    const userId = getUserId();
+    
+    // Очищаем историю в Supabase
+    await supabase.clearHistory(userId);
+    
+    // Очищаем localStorage
     localStorage.removeItem(STORAGE_KEYS.USER_SIGN);
-    localStorage.removeItem(STORAGE_KEYS.HISTORY);
     localStorage.removeItem(STORAGE_KEYS.HAS_VISITED);
+    localStorage.removeItem('supabase_user_id');
+    
     return true;
   } catch (error) {
     console.error('Ошибка сброса аккаунта:', error);
@@ -55,39 +78,43 @@ export const resetAccount = () => {
   }
 };
 
-// ========== ИСТОРИЯ ВОПРОСОВ ==========
-export const addHistoryEntry = (entry) => {
+// ========== ИСТОРИЯ ==========
+export const addHistoryEntry = async (entry) => {
   try {
-    const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
-    const newEntry = {
-      ...entry,
-      id: Date.now(),
-      date: new Date().toISOString()
-    };
-    history.push(newEntry);
-    localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history));
-    return true;
+    const userId = getUserId();
+    return await supabase.addHistoryEntry(userId, entry);
   } catch (error) {
-    console.error('Ошибка сохранения истории:', error);
+    console.error('Ошибка добавления истории:', error);
     return false;
   }
 };
 
-export const loadHistory = () => {
+export const loadHistory = async () => {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.HISTORY) || '[]');
+    const userId = getUserId();
+    return await supabase.loadHistory(userId);
   } catch (error) {
     console.error('Ошибка загрузки истории:', error);
     return [];
   }
 };
 
-export const clearHistory = () => {
+export const clearHistory = async () => {
   try {
-    localStorage.setItem(STORAGE_KEYS.HISTORY, '[]');
-    return true;
+    const userId = getUserId();
+    return await supabase.clearHistory(userId);
   } catch (error) {
     console.error('Ошибка очистки истории:', error);
     return false;
+  }
+};
+
+export const getHistoryStats = async () => {
+  try {
+    const userId = getUserId();
+    return await supabase.getHistoryStats(userId);
+  } catch (error) {
+    console.error('Ошибка статистики:', error);
+    return { total: 0, daily: 0, horizons: 0, heart: 0 };
   }
 };

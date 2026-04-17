@@ -69,7 +69,7 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
       const num = parseInt(key);
       setSelectedNumber(num);
       if (selectedCell) {
-        handleNumberInput(num);
+        attemptNumberInput(num);
       } else {
         showToast(`Выбрана цифра ${num}. Кликните на клетку`, 'info');
       }
@@ -78,7 +78,7 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
     else if (key === 'Delete' || key === 'Backspace') {
       setSelectedNumber(null);
       if (selectedCell) {
-        handleNumberInput(0);
+        attemptClearCell();
       }
       event.preventDefault();
     }
@@ -91,7 +91,6 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
   const navigateCell = (key) => {
     if (!selectedCell) {
       setSelectedCell([0, 0]);
-      setToastMessage(null);
       return;
     }
     
@@ -114,7 +113,6 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
         return;
     }
     
-    setToastMessage(null);
     setSelectedCell([row, col]);
   };
 
@@ -143,34 +141,28 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
   };
 
   const isOriginalCell = (row, col) => {
-    return puzzle[row][col] !== 0;
+    return puzzle[row]?.[col] !== 0;
   };
 
-  // НОВАЯ ФУНКЦИЯ: проверка, является ли клетка правильно введённой пользователем
   const isCorrectUserCell = (row, col) => {
-    const value = board[row][col];
+    const value = board[row]?.[col];
     if (value === 0) return false;
-    // Если это не исходная клетка и цифра правильная
-    if (!isOriginalCell(row, col) && solution[row][col] === value) {
+    if (!isOriginalCell(row, col) && solution[row]?.[col] === value) {
       return true;
     }
     return false;
   };
 
-  // Проверка, можно ли редактировать клетку
   const isEditableCell = (row, col) => {
-    // Исходные клетки нельзя редактировать
     if (isOriginalCell(row, col)) return false;
-    // Правильные клетки, введённые пользователем, тоже нельзя редактировать
     if (isCorrectUserCell(row, col)) return false;
-    // Неправильные клетки и пустые — можно редактировать
     return true;
   };
 
   const isCorrectNumber = (row, col) => {
-    const value = board[row][col];
+    const value = board[row]?.[col];
     if (value === 0) return true;
-    return solution[row][col] === value;
+    return solution[row]?.[col] === value;
   };
 
   const canInsertNumber = (num) => {
@@ -178,7 +170,8 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
     return true;
   };
 
-  const handleNumberInput = (num) => {
+  // Новая функция: попытка ввода цифры с проверкой
+  const attemptNumberInput = (num) => {
     if (!isGameActive) return;
     if (!selectedCell) {
       showToast('Сначала выберите клетку', 'warning');
@@ -187,16 +180,17 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
     
     const [row, col] = selectedCell;
     
-    // Проверяем, можно ли редактировать клетку
+    // Проверяем, можно ли редактировать
     if (!isEditableCell(row, col)) {
       if (isOriginalCell(row, col)) {
         showToast('Исходную цифру нельзя изменить', 'warning');
       } else if (isCorrectUserCell(row, col)) {
-        showToast('Правильную цифру нельзя изменить (она верна)', 'info');
+        showToast('Эта цифра уже правильная и защищена', 'info');
       }
       return;
     }
     
+    // Очистка клетки
     if (num === 0) {
       const newBoard = [...board];
       newBoard[row][col] = 0;
@@ -204,11 +198,13 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
       return;
     }
     
+    // Проверка лимита цифр
     if (!canInsertNumber(num) && board[row][col] !== num) {
       showToast(`Цифра ${num} уже использована 9 раз!`, 'warning');
       return;
     }
     
+    // Ввод цифры
     const newBoard = [...board];
     newBoard[row][col] = num;
     setBoard(newBoard);
@@ -227,6 +223,27 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
         }, 300);
       }
     }
+  };
+
+  // Попытка очистить клетку
+  const attemptClearCell = () => {
+    if (!isGameActive) return;
+    if (!selectedCell) return;
+    
+    const [row, col] = selectedCell;
+    
+    if (!isEditableCell(row, col)) {
+      if (isOriginalCell(row, col)) {
+        showToast('Исходную цифру нельзя очистить', 'warning');
+      } else if (isCorrectUserCell(row, col)) {
+        showToast('Правильную цифру нельзя очистить', 'info');
+      }
+      return;
+    }
+    
+    const newBoard = [...board];
+    newBoard[row][col] = 0;
+    setBoard(newBoard);
   };
 
   const checkCompletion = (currentBoard) => {
@@ -262,7 +279,7 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
     
     if (!isEditableCell(row, col)) {
       if (isOriginalCell(row, col)) {
-        showToast('Эта клетка уже заполнена правильно', 'info');
+        showToast('В этой клетке уже правильная цифра', 'info');
       } else if (isCorrectUserCell(row, col)) {
         showToast('В этой клетке уже правильное число', 'info');
       }
@@ -294,7 +311,7 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
       if (!isCorrectNumber(row, col)) {
         classes.push(styles.wrongNumber);
       } else if (isCorrectUserCell(row, col)) {
-        classes.push(styles.correctUserCell); // Новый стиль для правильных пользовательских цифр
+        classes.push(styles.correctUserCell);
       }
     }
     
@@ -349,7 +366,7 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
                 onClick={() => {
                   setSelectedNumber(num);
                   if (selectedCell) {
-                    handleNumberInput(num);
+                    attemptNumberInput(num);
                   } else {
                     showToast(`Выбрана цифра ${num}. Кликните на клетку`, 'info');
                   }
@@ -364,14 +381,7 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
         </div>
         <button
           className={`${styles.panelDelete} ${selectedNumber === null ? styles.panelDeleteSelected : ''}`}
-          onClick={() => {
-            setSelectedNumber(null);
-            if (selectedCell && isEditableCell(selectedCell[0], selectedCell[1])) {
-              handleNumberInput(0);
-            } else if (selectedCell) {
-              showToast('Эту клетку нельзя очистить', 'warning');
-            }
-          }}
+          onClick={attemptClearCell}
         >
           ⌫ Очистить
         </button>
@@ -411,17 +421,8 @@ const SudokuGame = ({ difficulty, category, onComplete, onBack }) => {
                     id={`cell-${rowIndex}-${colIndex}`}
                     className={getCellClass(rowIndex, colIndex)}
                     onClick={() => {
-                      setToastMessage(null);
+                      // Просто выбираем клетку, НЕ вставляем цифру автоматически
                       setSelectedCell([rowIndex, colIndex]);
-                      if (selectedNumber && isEditableCell(rowIndex, colIndex)) {
-                        handleNumberInput(selectedNumber);
-                      } else if (selectedNumber && !isEditableCell(rowIndex, colIndex)) {
-                        if (isOriginalCell(rowIndex, colIndex)) {
-                          showToast('Исходную цифру нельзя изменить', 'warning');
-                        } else if (isCorrectUserCell(rowIndex, colIndex)) {
-                          showToast('Правильную цифру нельзя изменить (она верна)', 'info');
-                        }
-                      }
                     }}
                   >
                     {cell !== 0 ? cell : ''}

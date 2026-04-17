@@ -4,12 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.3s ease;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.container.dark {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
 }
 
 .card {
@@ -18,13 +13,8 @@
   padding: 1.5rem;
   max-width: 500px;
   width: 100%;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
   animation: slideUp 0.4s ease-out;
-}
-
-.dark .card {
-  background: #1e1e2e;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .backButton {
@@ -40,10 +30,6 @@
   color: #764ba2;
 }
 
-.dark .backButton {
-  color: #9b7bc9;
-}
-
 .backButton:hover {
   opacity: 0.7;
 }
@@ -55,18 +41,10 @@
   text-align: center;
 }
 
-.dark .title {
-  color: #f5f5f5;
-}
-
 .section {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #e0e0e0;
-}
-
-.dark .section {
-  border-bottom-color: #333;
 }
 
 .sectionTitle {
@@ -74,10 +52,6 @@
   color: #666;
   margin-bottom: 1rem;
   font-weight: 500;
-}
-
-.dark .sectionTitle {
-  color: #aaa;
 }
 
 .settingItem {
@@ -100,41 +74,6 @@
 .settingLabel {
   color: #333;
   font-size: 0.95rem;
-}
-
-.dark .settingLabel {
-  color: #ddd;
-}
-
-.themeToggle {
-  width: 50px;
-  height: 26px;
-  background: #ccc;
-  border-radius: 30px;
-  border: none;
-  cursor: pointer;
-  position: relative;
-  transition: background 0.3s;
-  padding: 0;
-}
-
-.themeToggle.active {
-  background: #764ba2;
-}
-
-.toggleSlider {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  background: white;
-  border-radius: 50%;
-  top: 2px;
-  left: 2px;
-  transition: transform 0.3s;
-}
-
-.themeToggle.active .toggleSlider {
-  transform: translateX(24px);
 }
 
 .dangerButton, .warningButton {

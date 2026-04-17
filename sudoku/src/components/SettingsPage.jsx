@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useTheme } from '../context/ThemeContext';
 import { clearHistory, resetAccount } from '../utils/storage';
 import styles from '../styles/SettingsPage.module.css';
 
 const SettingsPage = ({ userSign, onBack, onResetAccount }) => {
-  const { isDark, toggleTheme } = useTheme();
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
@@ -20,7 +18,7 @@ const SettingsPage = ({ userSign, onBack, onResetAccount }) => {
   };
 
   return (
-    <div className={`${styles.container} ${isDark ? styles.dark : ''}`}>
+    <div className={styles.container}>
       <div className={styles.card}>
         <button className={styles.backButton} onClick={onBack}>
           ← Назад
@@ -28,22 +26,6 @@ const SettingsPage = ({ userSign, onBack, onResetAccount }) => {
         
         <h1 className={styles.title}>⚙️ Настройки</h1>
         
-        <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Внешний вид</h2>
-          <div className={styles.settingItem}>
-            <div className={styles.settingInfo}>
-              <span className={styles.settingIcon}>{isDark ? '🌙' : '☀️'}</span>
-              <span className={styles.settingLabel}>Тёмная тема</span>
-            </div>
-            <button
-              className={`${styles.themeToggle} ${isDark ? styles.active : ''}`}
-              onClick={toggleTheme}
-            >
-              <span className={styles.toggleSlider}></span>
-            </button>
-          </div>
-        </div>
-
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>📜 История</h2>
           <div className={styles.settingItem}>
@@ -72,7 +54,7 @@ const SettingsPage = ({ userSign, onBack, onResetAccount }) => {
           <h2 className={styles.sectionTitle}>👤 Аккаунт</h2>
           <div className={styles.settingItem}>
             <div className={styles.settingInfo}>
-              <span className={styles.settingIcon}>🔄</span>
+              <span className={styles.settingIcon}>⟳</span>
               <span className={styles.settingLabel}>Сменить знак зодиака</span>
             </div>
             {!showResetConfirm ? (
@@ -89,6 +71,17 @@ const SettingsPage = ({ userSign, onBack, onResetAccount }) => {
                 </button>
               </div>
             )}
+          </div>
+          
+          {/* Новая кнопка сброса аккаунта */}
+          <div className={styles.settingItem}>
+            <div className={styles.settingInfo}>
+              <span className={styles.settingIcon}>🗑</span>
+              <span className={styles.settingLabel}>Сбросить весь аккаунт</span>
+            </div>
+            <button className={styles.dangerButton} onClick={handleResetAccount}>
+              Сбросить
+            </button>
           </div>
         </div>
 

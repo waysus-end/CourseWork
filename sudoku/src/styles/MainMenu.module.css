@@ -87,26 +87,14 @@
 }
 
 .footer {
-  text-align: center;
-  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
 }
 
-.resetButton {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  color: white;
-  padding: 0.6rem 1.5rem;
-  border-radius: 2rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-}
-
-.resetButton:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.historyButton {
+.historyButton, .settingsButton {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
   color: white;
@@ -115,10 +103,9 @@
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.3s ease;
-  margin-right: 1rem;
 }
 
-.historyButton:hover {
+.historyButton:hover, .settingsButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
@@ -136,36 +123,4 @@
 
 .resetButton:hover {
   background: rgba(255, 255, 255, 0.3);
-}
-
-.footer {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-  flex-wrap: wrap;
-}
-
-.settingsButton {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  color: white;
-  padding: 0.6rem 1.5rem;
-  border-radius: 2rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-}
-
-.settingsButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-
-.footer {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-  flex-wrap: wrap;
 }

@@ -97,7 +97,7 @@
 .userInput {
   background: white;
   color: #476ab4;
-  font-weight: 650;
+  font-weight: 652;
   font-size: 1.35rem;
 }
 
@@ -183,7 +183,7 @@
   margin-bottom: 0.5rem;
 }
 
-.hintButton, .newGameButton {
+.hintButton, .newGameButton, .howToPlayButton {
   padding: 0.7rem 1.5rem;
   border: none;
   border-radius: 2rem;
@@ -210,6 +210,16 @@
 
 .newGameButton:hover {
   background: #388e3c;
+  transform: translateY(-2px);
+}
+
+.howToPlayButton {
+  background: #2196f3;
+  color: white;
+}
+
+.howToPlayButton:hover {
+  background: #1976d2;
   transform: translateY(-2px);
 }
 
@@ -251,7 +261,7 @@
   }
 }
 
-/* ========== ТЁМНАЯ ТЕМА (если подключим глобально) ========== */
+/* ========== ТЁМНАЯ ТЕМА ========== */
 .dark .cell {
   background: #2a2a3a;
   border-color: #444;
@@ -288,6 +298,94 @@
 
 .dark .original.sameNumber {
   background: #5a4a3a;
+}
+
+.dark .rightPanel {
+  background: #1e1e2e;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark .panelTitle {
+  color: #9b7bc9;
+  border-bottom-color: #333;
+}
+
+.dark .panelNumber {
+  background: #2a2a3a;
+  color: #c0c0ff;
+}
+
+.dark .panelNumber:hover:not(:disabled) {
+  background: #3a4a6a;
+}
+
+.dark .panelNumberSelected {
+  background: #9b7bc9;
+  color: white;
+}
+
+.dark .panelDelete {
+  background: #4a2a2a;
+  color: #ff6b6b;
+}
+
+.dark .panelDelete:hover {
+  background: #5a3a3a;
+}
+
+.dark .panelDeleteSelected {
+  background: #ff6b6b;
+  color: white;
+}
+
+.dark .panelHint {
+  color: #aaa;
+  border-top-color: #333;
+}
+
+.dark .modalContent {
+  background: #1e1e2e;
+}
+
+.dark .modalTitle {
+  color: #9b7bc9;
+}
+
+.dark .modalSection h3 {
+  color: #ddd;
+}
+
+.dark .modalSection p,
+.dark .modalSection li {
+  color: #aaa;
+}
+
+.dark .modalSection li strong {
+  color: #fff;
+}
+
+.dark .exampleOriginal {
+  background: #353545;
+  color: #ffd966;
+}
+
+.dark .exampleUser {
+  background: #2a2a3a;
+  color: #c0c0ff;
+}
+
+.dark .exampleWrong {
+  background: #2a2a3a;
+  color: #ff6b6b;
+}
+
+.dark .modalClose:hover {
+  color: #fff;
+}
+
+.dark .correctUserCell {
+  background: #2a2a3a;
+  color: #6fbf6f;
 }
 
 /* ========== ЭКРАННАЯ КЛАВИАТУРА ========== */
@@ -329,11 +427,10 @@
   background: #e0e0e0;
   color: #aaa;
   cursor: not-allowed;
-  position: relative;
   opacity: 0.7;
 }
 
-.completeBadge {
+.completeBadge, .panelCompleteBadge {
   position: absolute;
   top: -5px;
   right: -5px;
@@ -348,6 +445,12 @@
   justify-content: center;
 }
 
+.panelCompleteBadge {
+  font-size: 0.6rem;
+  width: 16px;
+  height: 16px;
+}
+
 .deleteButton {
   background: #ffebee;
   color: #f44336;
@@ -357,37 +460,6 @@
 .deleteButton:hover {
   background: #ffcdd2;
   transform: scale(0.95);
-}
-
-/* Адаптация для мобильных */
-@media (max-width: 480px) {
-  .numberButton {
-    width: 40px;
-    height: 40px;
-    font-size: 1.1rem;
-  }
-  
-  .deleteButton {
-    font-size: 0.9rem;
-  }
-}
-
-/* Кнопка "Как играть" */
-.howToPlayButton {
-  background: #2196f3;
-  color: white;
-  padding: 0.7rem 1.5rem;
-  border: none;
-  border-radius: 2rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.howToPlayButton:hover {
-  background: #1976d2;
-  transform: translateY(-2px);
 }
 
 /* ========== МОДАЛЬНОЕ ОКНО ========== */
@@ -534,63 +606,6 @@
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Тёмная тема для модального окна */
-.dark .modalContent {
-  background: #1e1e2e;
-}
-
-.dark .modalTitle {
-  color: #9b7bc9;
-}
-
-.dark .modalSection h3 {
-  color: #ddd;
-}
-
-.dark .modalSection p,
-.dark .modalSection li {
-  color: #aaa;
-}
-
-.dark .modalSection li strong {
-  color: #fff;
-}
-
-.dark .exampleOriginal {
-  background: #353545;
-  color: #ffd966;
-}
-
-.dark .exampleUser {
-  background: #2a2a3a;
-  color: #c0c0ff;
-}
-
-.dark .exampleWrong {
-  background: #2a2a3a;
-  color: #ff6b6b;
-}
-
-.dark .modalClose:hover {
-  color: #fff;
-}
-
 /* ========== ПРАВАЯ ПАНЕЛЬ С ЦИФРАМИ ========== */
 .gameArea {
   display: flex;
@@ -609,11 +624,6 @@
   text-align: center;
 }
 
-.dark .rightPanel {
-  background: #1e1e2e;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
 .panelTitle {
   font-size: 0.9rem;
   font-weight: 600;
@@ -621,11 +631,6 @@
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid #e0e0e0;
-}
-
-.dark .panelTitle {
-  color: #9b7bc9;
-  border-bottom-color: #333;
 }
 
 .numberGrid {
@@ -649,18 +654,9 @@
   position: relative;
 }
 
-.dark .panelNumber {
-  background: #2a2a3a;
-  color: #c0c0ff;
-}
-
 .panelNumber:hover:not(:disabled) {
   background: #e3f2fd;
   transform: scale(1.05);
-}
-
-.dark .panelNumber:hover:not(:disabled) {
-  background: #3a4a6a;
 }
 
 .panelNumberSelected {
@@ -669,30 +665,9 @@
   box-shadow: 0 0 0 2px #fff, 0 0 0 4px #764ba2;
 }
 
-.dark .panelNumberSelected {
-  background: #9b7bc9;
-  color: white;
-}
-
 .panelNumberDisabled {
   opacity: 0.5;
   cursor: not-allowed;
-  position: relative;
-}
-
-.panelCompleteBadge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background: #4caf50;
-  color: white;
-  font-size: 0.6rem;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .panelDelete {
@@ -709,29 +684,15 @@
   margin-bottom: 0.75rem;
 }
 
-.dark .panelDelete {
-  background: #4a2a2a;
-  color: #ff6b6b;
-}
-
 .panelDelete:hover {
   background: #ffcdd2;
   transform: scale(0.98);
-}
-
-.dark .panelDelete:hover {
-  background: #5a3a3a;
 }
 
 .panelDeleteSelected {
   background: #f44336;
   color: white;
   box-shadow: 0 0 0 2px #fff, 0 0 0 4px #f44336;
-}
-
-.dark .panelDeleteSelected {
-  background: #ff6b6b;
-  color: white;
 }
 
 .panelHint {
@@ -742,55 +703,6 @@
   border-top: 1px solid #e0e0e0;
 }
 
-.dark .panelHint {
-  color: #aaa;
-  border-top-color: #333;
-}
-
-/* Адаптация для мобильных */
-@media (max-width: 768px) {
-  .gameArea {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .rightPanel {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-    min-width: auto;
-    width: 100%;
-  }
-  
-  .numberGrid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 0;
-  }
-  
-  .panelNumber {
-    width: 45px;
-    height: 45px;
-    font-size: 1.2rem;
-  }
-  
-  .panelDelete {
-    width: auto;
-    padding: 0.5rem 1rem;
-  }
-  
-  .panelTitle {
-    display: none;
-  }
-}
-
-/* ========== ТОСТ-УВЕДОМЛЕНИЕ ========== */
-/* ========== ТОСТ-УВЕДОМЛЕНИЕ ========== */
-/* ========== ТОСТ-УВЕДОМЛЕНИЕ ========== */
 .rightPanelContainer {
   position: relative;
   display: flex;
@@ -798,6 +710,7 @@
   align-items: flex-end;
 }
 
+/* ========== ТОСТ-УВЕДОМЛЕНИЕ ========== */
 .toast {
   position: relative;
   margin-top: 0.75rem;
@@ -837,6 +750,32 @@
   color: white;
 }
 
+/* Правильные цифры, введённые пользователем */
+.correctUserCell {
+  background: white;
+  color: #25ad25;
+  font-weight: 652;
+  font-size: 1.4rem;
+  position: relative;
+}
+
+/* ========== АНИМАЦИИ ========== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes slideInRight {
   from {
     opacity: 0;
@@ -858,8 +797,46 @@
   }
 }
 
-/* Адаптация для мобильных */
+/* ========== АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ ========== */
 @media (max-width: 768px) {
+  .gameArea {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .rightPanel {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: auto;
+    width: 100%;
+  }
+  
+  .numberGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0;
+  }
+  
+  .panelNumber {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+  }
+  
+  .panelDelete {
+    width: auto;
+    padding: 0.5rem 1rem;
+  }
+  
+  .panelTitle {
+    display: none;
+  }
+  
   .rightPanelContainer {
     align-items: center;
   }
@@ -880,5 +857,17 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+}
+
+@media (max-width: 480px) {
+  .numberButton {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+  
+  .deleteButton {
+    font-size: 0.9rem;
   }
 }
